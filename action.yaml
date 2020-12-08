@@ -18,9 +18,9 @@ runs:
     - name: Stage plugin
       shell: bash
       run: |
-        mkdir -p ${{ github.workspace }}/${{ inputs.plugin }}
-        shopt -s extglob
-        mv !(${{ github.workspace }}/${{ inputs.plugin }}) ${{ github.workspace }}/${{ inputs.plugin }}
+        mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
+        shopt -s extglob dotglob nullglob
+        mv ${{ github.workspace }}/!(plugin) ${{ github.workspace }}/plugin/${{ inputs.plugin }}
     - name: Define October CMS and dependencies
       shell: bash
       run: |
@@ -32,9 +32,10 @@ runs:
     - name: Move plugin and October CMS into place
       shell: bash
       run: |
-        mv ${{ github.workspace }}/${{ inputs.plugin }} ${{ github.workspace }}/october/plugins/${{ inputs.plugin }}
         shopt -s dotglob nullglob
+        mv ${{ github.workspace }}/plugin/* ${{ github.workspace }}/october/plugins
         mv ${{ github.workspace }}/october/* ${{ github.workspace }}
+        rmdir ${{ github.workspace }}/plugin
         rmdir ${{ github.workspace }}/october
     - name: Install October CMS
       shell: bash
