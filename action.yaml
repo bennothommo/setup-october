@@ -28,7 +28,7 @@ runs:
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/system "${{ inputs.cmsVersion }}"
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/backend "${{ inputs.cmsVersion }}"
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/cms "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/library "${{ inputs.libraryVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/rain "${{ inputs.libraryVersion }}"
         
     - name: Move plugin into location
       shell: bash
