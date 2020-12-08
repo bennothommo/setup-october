@@ -19,4 +19,4 @@ runs:
       shell: bash
       run: |
         mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
-        ls -1A ${{ github.workspace }} | grep -v ^plugin$
+        ls -1 ${{ github.workspace }} | grep -v ^plugin$
