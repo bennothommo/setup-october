@@ -20,23 +20,4 @@ runs:
       run: |
         mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
         shopt -s extglob dotglob nullglob
-        ls -1A ${{ github.workspace }} | grep -v ^plugin$ | xargs -I{} mv {} ${{ github.workspace }}/plugin/${{ inputs.plugin }}/
-    - name: Define October CMS and dependencies
-      shell: bash
-      run: |
-        composer create-project --no-install --ignore-platform-reqs  october/october october
-        composer require --fixed --no-update october/system -q "${{ inputs.cmsVersion }}"
-        composer require --fixed --no-update october/backend -q "${{ inputs.cmsVersion }}"
-        composer require --fixed --no-update october/cms -q "${{ inputs.cmsVersion }}"
-        composer require --fixed --no-update october/library -q "${{ inputs.libraryVersion }}"
-    - name: Move plugin and October CMS into place
-      shell: bash
-      run: |
-        shopt -s dotglob nullglob
-        mv ${{ github.workspace }}/plugin/* ${{ github.workspace }}/october/plugins/
-        mv ${{ github.workspace }}/october/* ${{ github.workspace }}
-        rmdir ${{ github.workspace }}/plugin
-        rmdir ${{ github.workspace }}/october
-    - name: Install October CMS
-      shell: bash
-      run: composer update --ignore-platform-reqs --no-progress
+        ls -1A ${{ github.workspace }} | grep -v ^plugin$
