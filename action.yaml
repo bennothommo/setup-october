@@ -18,10 +18,9 @@ runs:
     - name: Stage plugin
       shell: bash
       run: |
-        cd ${{ github.workspace }}
-        mkdir -p staged-plugin
+        mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
         shopt -s extglob dotglob nullglob
-        mv * staged-plugin/
+        ls -1A ${{ github.workspace }} | grep -v ^plugin$ | xargs -I{} mv {} ${{ github.workspace }}/plugin/${{ inputs.plugin }}/
     - name: Define October CMS and dependencies
       shell: bash
       run: |
