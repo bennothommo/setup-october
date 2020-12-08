@@ -20,4 +20,4 @@ runs:
       run: |
         cd ${{ github.workspace }}
         mkdir -p plugin/${{ inputs.plugin }}
-        ls -1A | grep -v ^plugin$
+        ls -A
