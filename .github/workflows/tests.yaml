@@ -14,6 +14,9 @@ jobs:
     env:
       extensions: curl, fileinfo, gd, mbstring, openssl, pdo, pdo_sqlite, sqlite3, xml
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
