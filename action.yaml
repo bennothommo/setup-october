@@ -1,5 +1,6 @@
 name: Setup October CMS
 description: Installs October CMS and dependencies for testing plugins
+
 inputs:
   plugin:
     description: "The plugin directory to store the current plugin repository within, eg: 'author/plugin'"
@@ -8,10 +9,7 @@ inputs:
     description: The October CMS version to install
     required: true
     default: dev-develop as 1.1
-  libraryVersion:
-    description: The Rain Library version to install
-    required: true
-    default: dev-develop as 1.1
+
 runs:
   using: composite
   steps:
@@ -28,13 +26,13 @@ runs:
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/system "${{ inputs.cmsVersion }}"
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/backend "${{ inputs.cmsVersion }}"
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/cms "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/rain "${{ inputs.libraryVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/rain "${{ inputs.cmsVersion }}"
         
     - name: Move plugin into location
       shell: bash
       run: |
         mv ${{ github.workspace }}/plugin/* ${{ github.workspace }}/october/plugins
-        setopt -s dotglob nullglob
+        shopt -s dotglob nullglob
         mv ${{ github.workspace }}/october/* ${{ github.workspace }}
         rmdir ${{ github.workspace }}/plugin/
         rmdir ${{ github.workspace }}/october/
