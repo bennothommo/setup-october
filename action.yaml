@@ -1,0 +1,37 @@
+name: Setup October CMS
+description: Installs October CMS and dependencies for testing plugins
+inputs:
+  plugin:
+    description: "The plugin directory to store the current plugin repository within, eg: 'author/plugin'"
+    required: true
+  cmsVersion:
+    description: The October CMS version to install
+    required: true
+    default: dev-develop as 1.1
+  libraryVersion:
+    description: The Rain Library version to install
+    required: true
+    default: dev-develop as 1.1
+runs:
+  using: composite
+  steps:
+    - name: Stage plugin
+      shell: bash
+      run: |
+        mkdir -p ${{ github.workspace }}/${{ inputs.plugin }}
+        shopt -s extglob
+        mv !${{ github.workspace }}/${{ inputs.plugin }} ${{ github.workspace }}/${{ inputs.plugin }}
+    - name: Define October CMS and dependencies
+      shell: bash
+      run: |
+        composer create-project --no-install --ignore-platform-reqs  october/october .
+        composer require --fixed --no-update october/system -q "${{ inputs.cmsVersion }}"
+        composer require --fixed --no-update october/backend -q "${{ inputs.cmsVersion }}"
+        composer require --fixed --no-update october/cms -q "${{ inputs.cmsVersion }}"
+        composer require --fixed --no-update october/library -q "${{ inputs.libraryVersion }}"
+    - name: Move plugin into place
+      shell: bash
+      run: mv ${{ github.workspace }}/${{ inputs.plugin }} ${{ github.workspace }}/plugins/${{ inputs.plugin }}
+    - name: Install October CMS
+      shell: bash
+      run: composer update --ignore-platform-reqs --no-progress

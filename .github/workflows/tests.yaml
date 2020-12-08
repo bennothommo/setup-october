@@ -1,0 +1,36 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  testAction:
+    strategy:
+      max-parallel: 2
+      matrix:
+        operatingSystem: [ubuntu-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.operatingSystem }}
+    name: Action / ${{ matrix.operatingSystem }} / PHP 7.4
+    env:
+      extensions: curl, fileinfo, gd, mbstring, openssl, pdo, pdo_sqlite, sqlite3, xml
+    steps:
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer:v1
+          extensions: ${{ env.extensions }}
+
+      - name: Install October CMS
+        uses: bennothommo/setup-october@main
+        with:
+          plugin: bennothommo/test
+      
+      - name: Check files
+        shell: bash
+        run: |
+          [ ! -f ${{ github.workspace }}/modules/system/ServiceProvider.php ] && { echo "System module does not exist"; exit 1; }
+          [ ! -f ${{ github.workspace }}/modules/backend/ServiceProvider.php ] && { echo "Backend module does not exist"; exit 1; }
+          [ ! -f ${{ github.workspace }}/modules/cms/ServiceProvider.php ] && { echo "CMS module does not exist"; exit 1; }
+          [ ! -f ${{ github.workspace }}/vendor/october/rain/src/Foundation/Application.php ] && { echo "Library does not exist"; exit 1; }
+          [ ! -d ${{ github.workspace }}/plugins/bennothommo/test ] && { echo "Plugin directory does not exist"; exit 1; }
