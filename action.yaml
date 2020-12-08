@@ -16,25 +16,49 @@ runs:
     - name: Stage plugin
       shell: bash
       run: |
+        echo "Stage plugin for merging with October CMS..."
+        
         mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
         ls -1A ${{ github.workspace }} | grep -v ^plugin$ | xargs -I{} mv {} ${{ github.workspace }}/plugin/${{ inputs.plugin }}
+        
+        echo "Done."
+        echo ""
         
     - name: Prepare October CMS and dependencies
       shell: bash
       run: |
-        composer create-project --ignore-platform-reqs --no-install --no-progress --no-scripts october/october ${{ github.workspace }}/october "${{ inputs.cmsVersion }}"
+        echo "Install October CMS ${{ inputs.cmsVersion }}..."
+        composer create-project --ignore-platform-reqs --no-install --no-progress --no-scripts -q october/october ${{ github.workspace }}/october "${{ inputs.cmsVersion }}"
+        
+        echo "Set October CMS dependency versions..."
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/system "${{ inputs.cmsVersion }}"
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/backend "${{ inputs.cmsVersion }}"
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/cms "${{ inputs.cmsVersion }}"
         composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/rain "${{ inputs.cmsVersion }}"
         
-    - name: Move plugin into location
+        echo "Done."
+        echo ""
+        
+    - name: Move October CMS and plugin into location
       shell: bash
       run: |
+        echo "Move October CMS and plugin into workspace..."
+        
         mv ${{ github.workspace }}/plugin/* ${{ github.workspace }}/october/plugins
         shopt -s dotglob nullglob
         mv ${{ github.workspace }}/october/* ${{ github.workspace }}
         rmdir ${{ github.workspace }}/plugin/
         rmdir ${{ github.workspace }}/october/
-        ls -la ${{ github.workspace }}
-        cat ${{ github.workspace }}/composer.json
+        
+        echo "Done."
+        echo ""
+        
+    - name: Install Composer dependencies
+      shell: bash
+      run: |
+        echo "Install Composer dependencies..."
+        
+        composer update --working-dir="${{ github.workspace }}" --no-progress --ignore-platform-reqs
+        
+        echo "Done."
+        echo ""
