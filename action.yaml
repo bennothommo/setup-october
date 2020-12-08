@@ -20,7 +20,7 @@ runs:
       run: |
         mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
         shopt -s extglob dotglob nullglob
-        mv -t ${{ github.workspace }}/plugin/${{ inputs.plugin }}/ ${{ github.workspace }}/!(plugin)
+        mv ${{ github.workspace }}/!(plugin) ${{ github.workspace }}/plugin/${{ inputs.plugin }}/
     - name: Define October CMS and dependencies
       shell: bash
       run: |
