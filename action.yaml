@@ -24,11 +24,11 @@ runs:
     - name: Prepare October CMS and dependencies
       shell: bash
       run: |
-        composer create-project --ignore-platform-reqs --no-install --no-progress october/october ${{ github.workspace }}/october "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/system "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/backend "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/cms "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/library "${{ inputs.libraryVersion }}"
+        composer create-project --ignore-platform-reqs --no-install --no-progress --no-scripts october/october ${{ github.workspace }}/october "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/system "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/backend "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/cms "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/library "${{ inputs.libraryVersion }}"
         
     - name: Move plugin into location
       shell: bash
