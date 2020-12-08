@@ -19,4 +19,24 @@ runs:
       shell: bash
       run: |
         mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
-        ls -A ${{ github.workspace }}
+        ls -1A ${{ github.workspace }} | grep -v ^plugin$ | xargs -I{} mv {} ${{ github.workspace }}/plugin/${{ inputs.plugin }}
+        
+    - name: Prepare October CMS and dependencies
+      shell: bash
+      run: |
+        composer create-project --ignore-platform-reqs --no-install --no-progress october/october ${{ github.workspace }}/october "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/system "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/backend "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/cms "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update october/library "${{ inputs.libraryVersion }}"
+        
+    - name: Move plugin into location
+      shell: bash
+      run: |
+        mv ${{ github.workspace }}/plugin/* ${{ github.workspace }}/october/plugins
+        setopt -s dotglob nullglob
+        mv ${{ github.workspace }}/october/* ${{ github.workspace }}
+        rmdir ${{ github.workspace }}/plugin/
+        rmdir ${{ github.workspace }}/october/
+        ln -ls ${{ github.workspace }}
+        cat ${{ github.workspace }}/composer.json
