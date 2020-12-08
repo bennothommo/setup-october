@@ -18,5 +18,6 @@ runs:
     - name: Stage plugin
       shell: bash
       run: |
-        mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
-        ls -1 ${{ github.workspace }} | grep -v ^plugin$
+        cd ${{ github.workspace }}
+        mkdir -p plugin/${{ inputs.plugin }}
+        ls -1A | grep -v ^plugin$
