@@ -19,5 +19,4 @@ runs:
       shell: bash
       run: |
         mkdir -p ${{ github.workspace }}/plugin/${{ inputs.plugin }}
-        shopt -s extglob dotglob nullglob
         ls -1A ${{ github.workspace }} | grep -v ^plugin$
