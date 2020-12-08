@@ -23,10 +23,10 @@ runs:
       shell: bash
       run: |
         composer create-project --ignore-platform-reqs --no-install --no-progress --no-scripts october/october ${{ github.workspace }}/october "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/system "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/backend "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/cms "${{ inputs.cmsVersion }}"
-        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts october/rain "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/system "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/backend "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/cms "${{ inputs.cmsVersion }}"
+        composer require --working-dir="${{ github.workspace }}/october" --fixed --no-update --no-scripts -q october/rain "${{ inputs.cmsVersion }}"
         
     - name: Move plugin into location
       shell: bash
@@ -36,5 +36,5 @@ runs:
         mv ${{ github.workspace }}/october/* ${{ github.workspace }}
         rmdir ${{ github.workspace }}/plugin/
         rmdir ${{ github.workspace }}/october/
-        ln -ls ${{ github.workspace }}
+        ls -la ${{ github.workspace }}
         cat ${{ github.workspace }}/composer.json
