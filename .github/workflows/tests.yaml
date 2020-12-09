@@ -13,6 +13,7 @@ jobs:
     name: Action / ${{ matrix.operatingSystem }} / PHP 7.4
     env:
       extensions: curl, fileinfo, gd, mbstring, openssl, pdo, pdo_sqlite, sqlite3, xml
+      COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
