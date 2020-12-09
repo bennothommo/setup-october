@@ -55,8 +55,6 @@ runs:
         
     - name: Install Composer dependencies
       shell: bash
-      env:
-        COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "Install Composer dependencies..."
         
